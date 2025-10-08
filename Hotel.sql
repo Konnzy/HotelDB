@@ -80,16 +80,6 @@ CREATE TABLE
 	Room (
 		RoomID SERIAL PRIMARY KEY,
 		HotelID INT NOT NULL REFERENCES Hotel (HotelID),
-		RoomType TEXT NOT NULL,
-		BedSpace INT NOT NULL CHECK (BedSpace > 0),
-		PricePerNight NUMERIC(10, 2) NOT NULL CHECK (PricePerNight >= 0),
-		Status TEXT NOT NULL CHECK (Status IN ('Available', 'Booked', 'Maintenance'))
-	);
-
-CREATE TABLE
-	Room (
-		RoomID SERIAL PRIMARY KEY,
-		HotelID INT NOT NULL REFERENCES Hotel (HotelID),
 		RoomType TEXT NOT NULL CHECK (
 			RoomType IN ('Standard', 'Junior Suite', 'Suite', 'Deluxe')
 		),
