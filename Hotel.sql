@@ -150,7 +150,9 @@ CREATE TABLE
 	);
 
 
-CREATE ROLE administrator LOGIN SUPERUSER PASSWORD 'administrator';
+CREATE ROLE administrator LOGIN PASSWORD 'administrator';
+GRANT ALL PRIVILEGES ON DATABASE "Hotel" TO administrator;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO administrator;
 
 CREATE ROLE manager LOGIN PASSWORD 'manager';
 GRANT CONNECT ON DATABASE "Hotel" TO manager;
