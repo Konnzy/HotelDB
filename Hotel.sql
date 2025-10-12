@@ -153,7 +153,7 @@ GRANT SELECT ON Guest TO manager;
 GRANT SELECT ON Hotel TO manager;
 GRANT SELECT ON Payment TO manager;
 
-CREATE ROLE guest LOGIN;
+CREATE ROLE guest LOGIN PASSWORD 'guest';
 GRANT CONNECT ON DATABASE "Hotel" TO guest;
 GRANT USAGE ON SCHEMA public TO guest;
 GRANT INSERT ON Booking TO guest;
