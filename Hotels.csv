@@ -1,0 +1,51 @@
+HotelID,AdminID,Title,NumberOfStars,Address,PhoneNumber,Email
+1,2,Hotel Ukraine,5,"Kyiv, Khreshchatyk St, 1","""380500896870""",ukrainehotel@gmail.com
+2,28,Grand Palace,4,"Lviv, Svobody Ave, 12","""380503540685""",grandpalace@gmail.com
+3,46,Royal Garden,5,"Odesa, Deribasivska St, 8","""380511400976""",royalgarden@gmail.com
+4,9,Panorama,3,"Kharkiv, Sumskaya St, 22","""380520483594""",panorama.kh@gmail.com
+5,41,Sunrise Resort,4,"Dnipro, Central Ave, 15","""380523561897""",sunrise.resort@gmail.com
+6,22,Comfort Inn,3,"Poltava, Soborna Sq, 3","""380527864489""",comfortinn@gmail.com
+7,24,Victoria Hotel,5,"Kyiv, Hrushevsky St, 9","""380528112492""",victoria.hotel@gmail.com
+8,40,City Light,4,"Chernihiv, Myru Ave, 20","""380537514909""",citylight@gmail.com
+9,33,Mountain View,5,"Yaremche, Svobody St, 4","""380546807989""",mountainview@gmail.com
+10,3,Blue Lagoon,4,"Odesa, Primorsky Blvd, 2","""380547037136""",bluelagoon@gmail.com
+11,25,Elite Plaza,5,"Khmelnytskyi, Proskurivska St, 45","""380549802595""",eliteplaza@gmail.com
+12,5,Riverside Hotel,3,"Vinnytsia, Soborna St, 15","""380554780547""",riverside@gmail.com
+13,16,Golden Gate,4,"Kyiv, Yaroslaviv Val St, 5","""380557821121""",goldengate@gmail.com
+14,38,Premier Palace,5,"Kyiv, T. Shevchenka Blvd, 15","""380567779790""",premierpalace@gmail.com
+15,45,Black Sea,4,"Odesa, Lanzheronivska St, 2","""380572508421""",blacksea@gmail.com
+16,7,Opera Hotel,5,"Kyiv, Bohdana Khmelnytskoho St, 53","""380576329659""",opera.hotel@gmail.com
+17,21,Central Park,4,"Kharkiv, Pushkinska St, 10","""380585718099""",centralpark@gmail.com
+18,10,Crystal,3,"Cherkasy, Shchorsa St, 7","""380587927027""",crystal@gmail.com
+19,12,DeLuxe Inn,4,"Ivano-Frankivsk, Nezalezhnosti St, 19","""380631621073""",deluxeinn@gmail.com
+20,32,Alpine Sky,5,"Bukovel, Polyanytsya Village, 1","""380643104990""",alpinesky@gmail.com
+21,11,Golden Lion,3,"Lutsk, Lesi Ukrainky St, 14","""380643708086""",goldenlion@gmail.com
+22,17,Royal Castle,5,"Kamyanets-Podilskyi, Soborna St, 7","""380656659744""",royalcastle@gmail.com
+23,34,Park Hotel,4,"Uzhhorod, Voloshyna St, 12","""380669360744""",parkhotel@gmail.com
+24,8,Silver Star,3,"Zhytomyr, Kyivska St, 56","""380678347281""",silverstar@gmail.com
+25,13,Amber House,4,"Rivne, Soborna St, 4","""380679205573""",amberhouse@gmail.com
+26,26,Sea Breeze,5,"Odesa, Fontanska Rd, 33","""380681041815""",seabreeze@gmail.com
+27,29,Mountain Pearl,4,"Yaremche, Petrasha St, 5","""380682964654""",mountainpearl@gmail.com
+28,14,Green Valley,3,"Lviv, Zelena St, 55","""380702719654""",greenvalley@gmail.com
+29,30,Blue Sky,4,"Dnipro, Yavornytskoho Ave, 60","""380703540826""",bluesky@gmail.com
+30,48,Forest Hill,5,"Ternopil, Stepana Bandery St, 17","""380718636256""",foresthill@gmail.com
+31,27,White Swan,4,"Sumy, Kharkivska St, 11","""380734223780""",whiteswan@gmail.com
+32,20,Sun Hotel,3,"Kropyvnytskyi, Velyka Perspektyvna St, 19","""380740690886""",sunhotel@gmail.com
+33,36,Crystal Bay,5,"Mykolaiv, Admiralska St, 12","""380787871279""",crystalbay@gmail.com
+34,42,Grand Comfort,4,"Chernihiv, Rokossovskogo St, 8","""380801164185""",grandcomfort@gmail.com
+35,50,Holiday Inn,4,"Kyiv, Velyka Vasylkivska St, 55","""380801892561""",holidayinn@gmail.com
+36,35,Ocean View,5,"Odesa, Arkadiyska St, 10","""380820833768""",oceanview@gmail.com
+37,19,Platinum Hotel,4,"Kyiv, Lobanovskogo Ave, 21","""380858167077""",platinumhotel@gmail.com
+38,4,Riverside Palace,5,"Cherkasy, Haharina St, 10","""380876716838""",riversidepalace@gmail.com
+39,6,Elite Residence,5,"Kharkiv, Myronosytska St, 3","""380893010582""",eliteresidence@gmail.com
+40,49,Lakeview,4,"Poltava, Marshala Biryuzova St, 14","""380912830319""",lakeview@gmail.com
+41,18,The Capital,5,"Kyiv, Sportyvna Sq, 3","""380915316887""",thecapital@gmail.com
+42,15,Modern Art,4,"Lviv, Franka St, 8","""380924166590""",modernart@gmail.com
+43,37,Golden Palace,5,"Odesa, French Blvd, 10","""380950168146""",goldenpalace@gmail.com
+44,47,Old Town,3,"Kamyanets-Podilskyi, Lesi Ukrainky St, 9","""380957460521""",oldtown@gmail.com
+45,44,Star Hotel,4,"Lutsk, Soborna St, 6","""380969668497""",starhotel@gmail.com
+46,31,Urban Stay,3,"Zhytomyr, Peremohy Sq, 11","""380971711070""",urbanstay@gmail.com
+47,23,Premium,4,"Rivne, Vidinska St, 22","""380983827462""",premium@gmail.com
+48,43,Mirage,5,"Ivano-Frankivsk, Vovchynetska St, 7","""380986082202""",mirage@gmail.com
+49,1,Silver Wave,4,"Mykolaiv, Central Ave, 33","""380986354346""",silverwave@gmail.com
+50,39,Classic,3,"Ternopil, Ruska St, 20","""380986731454""",classic@gmail.com

@@ -1,0 +1,201 @@
+RoomID,HotelID,RoomType,BedSpace,PricePerNight,Status
+1,24,Junior Suite,1,337.66,Available
+2,21,Junior Suite,2,362.04,Maintenance
+3,17,Junior Suite,2,335.6,Booked
+4,46,Deluxe,2,278.28,Booked
+5,31,Deluxe,3,282.08,Maintenance
+6,28,Junior Suite,4,284.55,Booked
+7,45,Deluxe,2,172.79,Booked
+8,44,Deluxe,3,81.11,Available
+9,44,Suite,4,373.3,Booked
+10,49,Deluxe,1,58.04,Booked
+11,42,Suite,3,345.17,Maintenance
+12,31,Junior Suite,2,64.18,Booked
+13,39,Deluxe,2,222.3,Available
+14,49,Suite,1,230.49,Booked
+15,38,Deluxe,2,264.04,Booked
+16,36,Standard,2,397.83,Available
+17,1,Deluxe,1,329.07,Booked
+18,9,Suite,3,232.22,Available
+19,42,Junior Suite,4,195.6,Maintenance
+20,38,Deluxe,2,59.79,Maintenance
+21,11,Suite,2,303.53,Booked
+22,47,Suite,1,388.92,Maintenance
+23,37,Suite,3,66.0,Booked
+24,17,Junior Suite,1,210.1,Booked
+25,8,Suite,3,166.82,Maintenance
+26,6,Standard,1,53.77,Available
+27,3,Junior Suite,4,98.24,Available
+28,14,Suite,1,319.12,Maintenance
+29,40,Suite,1,197.25,Booked
+30,25,Deluxe,2,108.72,Maintenance
+31,22,Deluxe,2,54.56,Available
+32,13,Junior Suite,3,228.87,Maintenance
+33,5,Standard,4,250.04,Maintenance
+34,50,Suite,3,289.05,Booked
+35,33,Junior Suite,1,164.84,Available
+36,23,Standard,1,135.83,Booked
+37,1,Standard,1,219.64,Booked
+38,15,Deluxe,2,310.1,Booked
+39,4,Suite,4,147.91,Available
+40,13,Standard,3,367.0,Available
+41,26,Deluxe,2,338.7,Available
+42,26,Standard,2,137.01,Available
+43,15,Standard,2,377.11,Available
+44,12,Suite,3,295.85,Available
+45,30,Junior Suite,1,195.02,Available
+46,46,Deluxe,2,321.19,Available
+47,39,Deluxe,2,188.78,Available
+48,32,Junior Suite,2,213.52,Booked
+49,36,Standard,1,211.48,Maintenance
+50,45,Deluxe,1,60.77,Maintenance
+51,31,Junior Suite,3,220.21,Booked
+52,15,Standard,1,386.83,Maintenance
+53,33,Standard,1,100.68,Maintenance
+54,37,Junior Suite,2,174.94,Maintenance
+55,31,Suite,3,389.74,Maintenance
+56,3,Suite,1,67.9,Booked
+57,7,Deluxe,3,155.65,Booked
+58,30,Junior Suite,1,108.35,Available
+59,40,Junior Suite,2,148.07,Available
+60,14,Deluxe,4,366.96,Booked
+61,1,Suite,2,205.96,Available
+62,28,Junior Suite,2,399.53,Available
+63,14,Deluxe,2,91.57,Booked
+64,10,Deluxe,3,307.85,Maintenance
+65,19,Suite,4,159.22,Available
+66,15,Suite,4,358.26,Booked
+67,48,Suite,3,365.92,Booked
+68,29,Deluxe,2,340.66,Available
+69,5,Suite,2,151.7,Maintenance
+70,9,Junior Suite,1,160.67,Available
+71,11,Deluxe,4,225.32,Maintenance
+72,25,Deluxe,1,310.57,Available
+73,2,Suite,4,299.84,Maintenance
+74,37,Suite,1,109.24,Available
+75,50,Junior Suite,1,292.94,Booked
+76,13,Suite,3,135.74,Available
+77,37,Junior Suite,2,346.44,Booked
+78,30,Deluxe,3,260.49,Maintenance
+79,47,Deluxe,3,179.25,Booked
+80,9,Deluxe,1,76.54,Maintenance
+81,17,Deluxe,3,83.76,Maintenance
+82,35,Suite,2,275.98,Available
+83,43,Junior Suite,1,312.76,Available
+84,12,Junior Suite,1,114.93,Booked
+85,16,Junior Suite,2,145.08,Maintenance
+86,18,Suite,4,244.68,Booked
+87,31,Standard,3,267.03,Booked
+88,42,Suite,3,166.25,Available
+89,50,Suite,2,293.59,Available
+90,35,Deluxe,1,122.94,Available
+91,45,Junior Suite,4,352.61,Maintenance
+92,9,Standard,3,156.71,Maintenance
+93,17,Standard,4,256.84,Maintenance
+94,34,Junior Suite,3,399.99,Available
+95,14,Junior Suite,2,324.5,Booked
+96,43,Junior Suite,1,272.0,Available
+97,34,Junior Suite,1,221.95,Available
+98,30,Deluxe,2,75.61,Available
+99,38,Junior Suite,1,380.12,Maintenance
+100,12,Suite,3,251.44,Available
+101,12,Standard,4,352.93,Available
+102,32,Suite,2,107.46,Available
+103,35,Suite,3,284.0,Maintenance
+104,41,Standard,1,203.77,Available
+105,49,Deluxe,4,348.84,Maintenance
+106,16,Standard,3,361.71,Maintenance
+107,13,Suite,3,190.92,Booked
+108,50,Deluxe,2,182.86,Maintenance
+109,17,Standard,4,197.7,Available
+110,35,Junior Suite,3,360.41,Maintenance
+111,25,Standard,3,214.25,Booked
+112,41,Suite,1,372.51,Maintenance
+113,33,Standard,1,198.93,Available
+114,39,Deluxe,2,304.55,Available
+115,24,Junior Suite,2,127.49,Maintenance
+116,49,Standard,2,61.97,Booked
+117,8,Standard,3,234.8,Maintenance
+118,24,Standard,3,302.23,Available
+119,3,Standard,4,381.23,Maintenance
+120,7,Junior Suite,1,132.45,Available
+121,8,Standard,4,92.9,Booked
+122,30,Standard,2,380.19,Maintenance
+123,3,Standard,1,264.79,Available
+124,38,Standard,1,193.2,Maintenance
+125,8,Standard,1,182.65,Maintenance
+126,44,Suite,2,160.98,Maintenance
+127,10,Suite,4,376.68,Available
+128,10,Suite,1,323.35,Available
+129,17,Suite,1,190.45,Booked
+130,44,Deluxe,4,193.1,Booked
+131,26,Standard,3,237.94,Available
+132,37,Junior Suite,1,151.03,Booked
+133,29,Suite,2,126.95,Booked
+134,27,Deluxe,1,91.8,Booked
+135,27,Junior Suite,1,138.79,Booked
+136,3,Deluxe,1,293.94,Booked
+137,18,Suite,4,195.97,Booked
+138,40,Deluxe,3,392.15,Maintenance
+139,4,Standard,2,185.8,Available
+140,27,Junior Suite,1,396.2,Available
+141,17,Suite,4,140.92,Available
+142,8,Junior Suite,1,108.16,Booked
+143,25,Standard,4,235.33,Booked
+144,38,Suite,4,278.41,Maintenance
+145,44,Standard,1,287.62,Booked
+146,24,Deluxe,1,293.62,Maintenance
+147,47,Suite,4,209.83,Available
+148,7,Deluxe,4,347.64,Available
+149,43,Standard,3,100.0,Booked
+150,29,Standard,4,220.63,Maintenance
+151,41,Suite,2,317.97,Booked
+152,34,Deluxe,1,146.58,Available
+153,12,Suite,3,362.39,Available
+154,37,Deluxe,2,386.9,Available
+155,2,Suite,2,60.72,Available
+156,16,Junior Suite,4,225.69,Maintenance
+157,49,Standard,2,157.87,Available
+158,6,Deluxe,2,274.56,Maintenance
+159,40,Deluxe,1,77.08,Maintenance
+160,5,Standard,2,118.61,Maintenance
+161,38,Deluxe,4,314.62,Booked
+162,38,Standard,4,234.95,Available
+163,26,Deluxe,2,348.7,Available
+164,41,Junior Suite,2,117.82,Available
+165,22,Junior Suite,1,175.66,Maintenance
+166,50,Suite,2,101.26,Available
+167,4,Suite,1,398.99,Maintenance
+168,19,Standard,3,168.91,Maintenance
+169,32,Standard,3,65.16,Maintenance
+170,14,Deluxe,2,56.59,Maintenance
+171,26,Standard,1,102.55,Available
+172,29,Suite,3,261.61,Booked
+173,38,Standard,2,147.37,Available
+174,15,Suite,2,254.86,Maintenance
+175,29,Suite,1,50.64,Maintenance
+176,18,Junior Suite,3,296.74,Available
+177,38,Junior Suite,2,137.1,Available
+178,31,Suite,2,330.74,Booked
+179,29,Standard,1,106.62,Booked
+180,20,Standard,4,366.0,Booked
+181,25,Suite,2,84.51,Maintenance
+182,17,Junior Suite,4,51.1,Booked
+183,43,Standard,2,278.4,Booked
+184,42,Junior Suite,2,66.18,Booked
+185,37,Junior Suite,4,295.23,Booked
+186,45,Junior Suite,4,267.6,Booked
+187,49,Standard,3,330.05,Available
+188,17,Deluxe,2,306.3,Maintenance
+189,7,Deluxe,4,291.44,Maintenance
+190,12,Deluxe,3,240.49,Booked
+191,10,Junior Suite,3,356.62,Available
+192,29,Junior Suite,2,116.73,Booked
+193,41,Suite,2,158.37,Booked
+194,38,Standard,4,136.51,Available
+195,48,Standard,2,307.87,Booked
+196,23,Standard,3,213.77,Available
+197,50,Suite,2,134.95,Available
+198,20,Junior Suite,2,242.38,Available
+199,8,Standard,4,199.07,Booked
+200,18,Standard,4,158.26,Booked
