@@ -7,10 +7,10 @@ CREATE TABLE
 		),
 		DscCondition TEXT NOT NULL CHECK (
 			DscCondition IN (
-				'Soldier',
-				'Promocode',
-				'Student',
-				'Birthday',
+				'Soldier', 
+				'Promocode', 
+				'Student', 
+				'Birthday', 
 				'Regular'
 			)
 		),
@@ -27,7 +27,11 @@ CREATE TABLE
 				'SPA',
 				'Excursion',
 				'Gym',
-				'Parking'
+				'Parking',
+				'Security',
+				'Airport Shuttle',
+				'WiFi',
+				'Room Service'
 			)
 		)
 	);
@@ -39,7 +43,7 @@ CREATE TABLE
 		Surname TEXT NOT NULL,
 		Patronymic TEXT,
 		Login TEXT NOT NULL UNIQUE,
-		PasswordHash BYTEA NOT NULL
+		Passwrd TEXT NOT NULL
 	);
 
 CREATE TABLE
@@ -50,7 +54,7 @@ CREATE TABLE
 		Surname TEXT NOT NULL,
 		Patronymic TEXT,
 		Login TEXT NOT NULL UNIQUE,
-		PasswordHash BYTEA NOT NULL
+		Passwrd TEXT NOT NULL
 	);
 
 CREATE TABLE
@@ -139,6 +143,29 @@ CREATE TABLE
 		PaymentTime TIMESTAMP NOT NULL
 	);
 
+REASSIGN OWNED BY administrator TO postgres;
+DROP OWNED BY administrator;
+DROP ROLE administrator;
+
+REASSIGN OWNED BY manager TO postgres;
+DROP OWNED BY manager;
+DROP ROLE manager;
+
+REASSIGN OWNED BY guest TO postgres;
+DROP OWNED BY guest;
+DROP ROLE guest;
+
+REASSIGN OWNED BY user_admin TO postgres;
+DROP OWNED BY user_admin;
+DROP ROLE user_admin;
+
+REASSIGN OWNED BY user_manager TO postgres;
+DROP OWNED BY user_manager;
+DROP ROLE user_manager;
+
+REASSIGN OWNED BY user_guest TO postgres;
+DROP OWNED BY user_guest;
+DROP ROLE user_guest;
 
 CREATE ROLE administrator LOGIN PASSWORD 'administrator';
 GRANT ALL PRIVILEGES ON DATABASE "Hotel" TO administrator;
@@ -165,3 +192,26 @@ GRANT SELECT ON Booking TO guest;
 GRANT SELECT ON Room TO guest;
 GRANT SELECT ON Hotel TO guest;
 GRANT SELECT ON Payment TO guest;
+
+CREATE ROLE user_admin LOGIN PASSWORD 'administrator1';
+CREATE ROLE user_manager LOGIN PASSWORD 'manager1';
+CREATE ROLE user_guest LOGIN PASSWORD 'guest1';
+
+GRANT administrator TO user_admin;
+GRANT manager TO user_manager;
+GRANT guest TO user_guest;
+
+ALTER TABLE Guest
+    ADD CONSTRAINT chk_birthdate CHECK (BirthDate <= CURRENT_DATE - INTERVAL '18 years');
+
+ALTER TABLE Payment
+    ALTER COLUMN Currency SET DEFAULT 'UAH';
+
+ALTER TABLE Booking
+    ALTER COLUMN Status SET DEFAULT 'Pending';
+
+ALTER TABLE Guest
+	DROP CONSTRAINT guest_phonenumber_key;
+
+ALTER TABLE Hotel
+	DROP CONSTRAINT hotel_phonenumber_key;
