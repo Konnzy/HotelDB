@@ -292,3 +292,39 @@ WHERE EXISTS (
 SELECT g.firstname, g.surname
 FROM Guest g
 CROSS JOIN Room r;
+
+SELECT  h.title, h.numberofstars, h.address, g.firstname, g.surname
+FROM Hotel h
+JOIN Room r ON r.hotelid = h.hotelid
+JOIN Booking b ON b.roomid = r.roomid
+JOIN Guest g ON g.guestid = b.guestid
+WHERE h.address ILIKE '%Kyiv%';
+
+SELECT m.firstname, m.surname, b.bookingid, b.status
+FROM Manager m
+JOIN Booking b ON m.managerid = b.managerid
+ORDER BY m.firstname;
+
+SELECT g.firstname, g.surname, b.bookingid
+FROM Guest g
+LEFT JOIN Booking b ON g.guestid = b.guestid
+WHERE b.bookingid IS NULL;
+
+SELECT r.roomid, r.roomtype, b.bookingid
+FROM Room r
+RIGHT JOIN Booking b ON r.roomid = b.roomid
+WHERE r.status = 'Available';
+
+SELECT a.adminid, a.firstname, a.surname, 'Administrator' AS role
+FROM Administrator a
+UNION
+SELECT m.managerid, m.firstname, m.surname, 'Manager' AS role
+FROM Manager m;
+
+SELECT h.title, h.numberofstars, h.address
+FROM Hotel h
+WHERE h.address ILIKE '%Kyiv%' OR h.address ILIKE '%Odesa%'
+INTERSECT
+SELECT h.title, h.numberofstars, h.address
+FROM Hotel h
+WHERE h.numberofstars = 5;
