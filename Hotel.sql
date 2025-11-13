@@ -328,3 +328,18 @@ INTERSECT
 SELECT h.title, h.numberofstars, h.address
 FROM Hotel h
 WHERE h.numberofstars = 5;
+
+SELECT r.roomid, r.roomtype, r.bedspace, r.PricePerNight
+FROM Room r
+WHERE r.status = 'Available'
+AND NOT EXISTS(SELECT *
+FROM Booking b
+WHERE b.roomid = r.roomid
+AND b.DateCheckIn <= '2025-07-31'
+AND b.DateCheckOut >= '2025-07-01');
+
+SELECT g.firstname, g.surname, g.patronymic
+FROM Guest g
+JOIN Booking b ON g.guestid = b.guestid
+WHERE b.datecheckin >= '2025-01-01' AND b.datecheckin <= '2025-12-31'
+AND b.status IN ('Pending', 'Confirmed', 'Cancelled');
