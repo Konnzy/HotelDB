@@ -215,3 +215,80 @@ ALTER TABLE Guest
 
 ALTER TABLE Hotel
 	DROP CONSTRAINT hotel_phonenumber_key;
+
+SELECT payment.bookingid, payment.Amount 
+FROM Payment
+WHERE payment.amount >= 2500;
+
+SELECT guest.firstname, guest.Surname
+FROM Guest
+WHERE (firstname LIKE 'A%' OR firstname LIKE 'E%')
+  AND NOT (BirthDate BETWEEN '1990-01-01' AND '1995-12-31');
+
+SELECT booking.numberofnights, booking.status,booking.amount
+FROM Booking
+WHERE booking.numberofnights > 3 
+	AND (booking.status = 'Confirmed' OR booking.status = 'CheckedIn')
+	AND NOT (booking.promocode IS NULL);
+
+SELECT guest.firstname, guest.surname, guest.birthdate, AGE(CURRENT_DATE, guest.birthdate) AS age
+FROM Guest
+WHERE EXTRACT(YEAR FROM AGE(CURRENT_DATE, guest.birthdate)) >= 30;
+
+SELECT guest.firstname, guest.surname, guest.birthdate, 
+	   EXTRACT(YEAR FROM AGE(CURRENT_DATE, guest.birthdate)) AS age
+FROM Guest
+WHERE MOD(EXTRACT(YEAR FROM AGE(CURRENT_DATE, guest.birthdate)), 5) = 0;
+
+SELECT booking.bookingid, booking.datecheckin, booking.status, booking.amount
+FROM Booking
+WHERE EXTRACT(MONTH FROM booking.datecheckin) IN (6, 7, 8);
+
+SELECT room.roomid, room.roomtype, room.PricePerNight
+FROM Room
+WHERE room.PricePerNight BETWEEN 100 AND 250
+  AND room.Status = 'Available';
+
+SELECT hotel.title, hotel.numberofstars, hotel.phonenumber
+FROM Hotel
+WHERE hotel.phonenumber ILIKE '%3805%';
+
+SELECT adm.firstname, adm.surname, hotel.title
+FROM (
+	SELECT * 
+	FROM Administrator)  AS adm
+JOIN Hotel ON adm.adminid = hotel.adminid;
+
+SELECT room.roomid, room.roomtype, room.status,
+(SELECT h.title 
+FROM HOTEL h
+WHERE h.hotelid = room.hotelid)
+FROM Room;
+
+SELECT g.firstname, g.surname
+FROM Guest g
+WHERE g.guestid IN (
+    SELECT b.guestid
+    FROM Booking b
+    WHERE b.roomid IN (
+        SELECT roomid
+        FROM Room
+        WHERE status = 'Booked'
+    )
+);
+
+SELECT g.firstname, g.surname
+FROM Guest g
+WHERE EXISTS (
+	SELECT *
+	FROM Payment p
+	WHERE p.bookingid IN (
+		SELECT b.bookingid
+		FROM Booking b
+		WHERE b.guestid = g.guestid
+	) AND p.status = 'Declined'
+);
+
+SELECT g.firstname, g.surname
+FROM Guest g
+CROSS JOIN Room r;
