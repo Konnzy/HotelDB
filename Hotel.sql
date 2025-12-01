@@ -1,3 +1,7 @@
+-- ------------------------------------------------
+-- LabWork 2
+-- ------------------------------------------------
+
 CREATE TABLE
 	Discount (
 		DiscountID SERIAL PRIMARY KEY,
@@ -216,55 +220,73 @@ ALTER TABLE Guest
 ALTER TABLE Hotel
 	DROP CONSTRAINT hotel_phonenumber_key;
 
+-- ------------------------------------------------
+-- LabWork 3
+-- ------------------------------------------------
+
+-- Вивести всі бронювання з сумою платежу більше або рівною 2500
 SELECT payment.bookingid, payment.Amount 
 FROM Payment
 WHERE payment.amount >= 2500;
 
+-- Вивести імена та прізвища гостей, чиї імена починаються на 'A' або 'E',але не народжені в період з 1990 по 1995 р
 SELECT guest.firstname, guest.Surname
 FROM Guest
 WHERE (firstname LIKE 'A%' OR firstname LIKE 'E%')
   AND NOT (BirthDate BETWEEN '1990-01-01' AND '1995-12-31');
 
+-- Вивести кількість ночей , статус та суму платежу бронювань ,
+-- де кількість ночей більше 3, статус 'Confirmed' або 'CheckedIn', та присутній промокод
 SELECT booking.numberofnights, booking.status,booking.amount
 FROM Booking
 WHERE booking.numberofnights > 3 
 	AND (booking.status = 'Confirmed' OR booking.status = 'CheckedIn')
 	AND NOT (booking.promocode IS NULL);
 
+-- Вивести імена, прізвища, дату народження та вік гостей , які старші за 30 років
 SELECT guest.firstname, guest.surname, guest.birthdate, AGE(CURRENT_DATE, guest.birthdate) AS age
 FROM Guest
 WHERE EXTRACT(YEAR FROM AGE(CURRENT_DATE, guest.birthdate)) >= 30;
 
+-- Вивести імена , прізвища, дату народження та вік гостей , вік яких є кратним 5
 SELECT guest.firstname, guest.surname, guest.birthdate, 
 	   EXTRACT(YEAR FROM AGE(CURRENT_DATE, guest.birthdate)) AS age
 FROM Guest
 WHERE MOD(EXTRACT(YEAR FROM AGE(CURRENT_DATE, guest.birthdate)), 5) = 0;
 
+-- Вивести ідентифікатори бронювань , дати заїзду , статус  та суму платежу 
+-- для бронювань , де дата заїзду припадає на літні місяці
 SELECT booking.bookingid, booking.datecheckin, booking.status, booking.amount
 FROM Booking
 WHERE EXTRACT(MONTH FROM booking.datecheckin) IN (6, 7, 8);
 
+-- Вивести ідентифікатори номерів , типи номерів  та ціну за ніч 
+-- для номерів , де ціна за ніч знаходиться в діапазоні від 100 до 250 та статус 'Available'
 SELECT room.roomid, room.roomtype, room.PricePerNight
 FROM Room
 WHERE room.PricePerNight BETWEEN 100 AND 250
   AND room.Status = 'Available';
 
+-- Вивести назви готелів , кількість зірок та номери телефонів для готелів, номери телефонів які починаються з 5
 SELECT hotel.title, hotel.numberofstars, hotel.phonenumber
 FROM Hotel
 WHERE hotel.phonenumber ILIKE '%3805%';
 
+-- Вивести імена , прізвища адміністраторів та назви готелів,якими вони керують
 SELECT adm.firstname, adm.surname, hotel.title
 FROM (
 	SELECT * 
 	FROM Administrator)  AS adm
 JOIN Hotel ON adm.adminid = hotel.adminid;
 
+-- Вивести ідентифікатори номерів, типи номерів, статус та назви готелів, яким вони належать
 SELECT room.roomid, room.roomtype, room.status,
 (SELECT h.title 
 FROM HOTEL h
 WHERE h.hotelid = room.hotelid)
 FROM Room;
 
+-- Вивести імена  та прізвища гостей, які мають бронювання в номерах зі статусом 'Booked'
 SELECT g.firstname, g.surname
 FROM Guest g
 WHERE g.guestid IN (
@@ -277,6 +299,7 @@ WHERE g.guestid IN (
     )
 );
 
+-- Вивести імена  та прізвища гостей , які мають принаймні один відхилений платіж
 SELECT g.firstname, g.surname
 FROM Guest g
 WHERE EXISTS (
@@ -289,10 +312,12 @@ WHERE EXISTS (
 	) AND p.status = 'Declined'
 );
 
+-- Вивести всі можливі комбінації гостей та номерів, незалежно від наявності бронювань.
 SELECT g.firstname, g.surname
 FROM Guest g
 CROSS JOIN Room r;
 
+-- Вивести назви готелів, кількість зірок, адреси та імена з прізвищами гостей, які мають бронювання в готелі у Києві.
 SELECT  h.title, h.numberofstars, h.address, g.firstname, g.surname
 FROM Hotel h
 JOIN Room r ON r.hotelid = h.hotelid
@@ -300,27 +325,32 @@ JOIN Booking b ON b.roomid = r.roomid
 JOIN Guest g ON g.guestid = b.guestid
 WHERE h.address ILIKE '%Kyiv%';
 
+-- Вивести імена , прізвища менеджерів та ідентифікатори бронювань, якими вони керують, відсортовані за іменами менеджерів
 SELECT m.firstname, m.surname, b.bookingid, b.status
 FROM Manager m
 JOIN Booking b ON m.managerid = b.managerid
 ORDER BY m.firstname;
 
+-- Вивести імена , прізвища гостей та ідентифікатори бронювань для гостей, які не мають жодного бронювання
 SELECT g.firstname, g.surname, b.bookingid
 FROM Guest g
 LEFT JOIN Booking b ON g.guestid = b.guestid
 WHERE b.bookingid IS NULL;
 
+-- Вивести ідентифікатори номерів, типи номерів та ідентифікатори бронювань для всіх номерів, навіть якщо вони не заброньовані
 SELECT r.roomid, r.roomtype, b.bookingid
 FROM Room r
 RIGHT JOIN Booking b ON r.roomid = b.roomid
 WHERE r.status = 'Available';
 
+-- Вивести імена , прізвища та ролі всіх адміністраторів і менеджерів
 SELECT a.adminid, a.firstname, a.surname, 'Administrator' AS role
 FROM Administrator a
 UNION
 SELECT m.managerid, m.firstname, m.surname, 'Manager' AS role
 FROM Manager m;
 
+-- Вивести назви готелів , кількість зірок та адреси для готелів, які знаходяться в Києві або Одесі та мають 5 зірок
 SELECT h.title, h.numberofstars, h.address
 FROM Hotel h
 WHERE h.address ILIKE '%Kyiv%' OR h.address ILIKE '%Odesa%'
@@ -329,6 +359,7 @@ SELECT h.title, h.numberofstars, h.address
 FROM Hotel h
 WHERE h.numberofstars = 5;
 
+-- За певний період вивести перелік вільних номерів, з вказанням місткості, комфортності та ціни за добу перебування.
 SELECT r.roomid, r.roomtype, r.bedspace, r.PricePerNight
 FROM Room r
 WHERE r.status = 'Available'
@@ -338,8 +369,136 @@ WHERE b.roomid = r.roomid
 AND b.DateCheckIn <= '2025-07-31'
 AND b.DateCheckOut >= '2025-07-01');
 
+-- За вказаний користувачем період вивести ПІБ клієнтів, котрі бронювали номер, однак не заїхали в нього.
 SELECT g.firstname, g.surname, g.patronymic
 FROM Guest g
 JOIN Booking b ON g.guestid = b.guestid
 WHERE b.datecheckin >= '2025-01-01' AND b.datecheckin <= '2025-12-31'
 AND b.status IN ('Pending', 'Confirmed', 'Cancelled');
+
+-- ------------------------------------------------
+-- LabWork 4
+-- ------------------------------------------------
+
+-- Визначте загальну кількість бронювань та загальний дохід готелю за листопад 2025 року.
+SELECT 
+	COUNT(*) AS total_bookings,
+	SUM(b.Amount) AS total_revenue
+FROM Booking b
+WHERE DateCheckIn >= '2025-11-01' AND DateCheckOut <= '2025-11-30';
+
+-- Визначте загальний дохід кожного готелю за літньо-осінній період 2025 року, згрупувавши результати за назвою готелю та статусом бронювання.
+SELECT h.title, b.status, SUM(b.amount) AS total_revenue
+FROM Booking b
+JOIN Room r ON b.roomid = r.roomid
+JOIN Hotel h ON r.hotelid = h.hotelid
+WHERE b.status = 'Confirmed' 
+AND b.DateCheckIn >= '2025-06-01' 
+AND b.DateCheckOut <= '2025-11-30'
+GROUP BY h.title, b.status;
+
+-- Вивести імена , прізвища та кількість бронювань для гостей, які мають більше одного бронювання
+SELECT g.firstname, g.surname, COUNT(b.bookingid) AS total_bookings
+FROM Guest g
+JOIN Booking b ON g.guestid = b.guestid
+GROUP BY g.guestid
+HAVING COUNT(b.bookingid) > 1
+
+-- Визначте середню суму бронювання для бронювань, зроблених у літній період 2025 року, якщо ця сума перевищує 500.
+SELECT AVG(b.amount) AS average_booking_amount
+FROM Booking b
+WHERE b.DateCheckIn >= '2025-06-01' AND b.DateCheckOut <= '2025-08-31'
+HAVING AVG(b.amount) > 500;
+
+-- Виведіть усі бронювання та пронумерйте їх у порядку зростання дати заїзду та дати виїзду.
+SELECT b.bookingid, b.datecheckin, b.datecheckout, b.amount,
+ROW_NUMBER() OVER (ORDER BY b.datecheckin, b.datecheckout) AS row_num
+FROM Booking b;
+
+-- Виведіть назви готелів та перелік типів номерів, які вони пропонують
+SELECT h.title, STRING_AGG(DISTINCT r.roomtype, ', ') AS room_types
+FROM Hotel h
+JOIN Room r ON h.hotelid = r.hotelid
+GROUP BY h.title;
+
+-- Виведіть назви готелів, типи номерів, статус бронювання та суми платежів, відсортовані за назвою готелю за зростанням та сумою платежу за спаданням.
+SELECT h.title, r.roomtype, b.status, b.amount
+FROM Booking b
+JOIN Room r ON b.roomid = r.roomid
+JOIN Hotel h ON r.hotelid = h.hotelid
+ORDER BY h.title ASC, b.amount DESC;
+
+-- За певний, вказаний користувачем період, вивести найбільш популярний номер (тобто номер, котрий бронювали найбільшу кількість разів).
+SELECT h.title AS hotel_title, r.roomid, r.roomtype, 
+COUNT(b.roomid) AS total_bookings
+FROM Booking b
+JOIN Room r ON b.roomid = r.roomid
+JOIN Hotel h ON r.hotelid = h.hotelid
+WHERE b.DateCheckIn >= '2025-01-01' AND b.DateCheckOut <= '2025-12-31'
+GROUP BY h.title, r.roomid, r.roomtype
+ORDER BY total_bookings DESC
+LIMIT 1;
+
+-- За минулий рік вивести ПІБ клієнтів, котрі зупинялись в готелі більш ніж 3 рази та мали знижку постійного клієнта.
+SELECT h.title AS hotel_title, g.firstname, g.surname, g.patronymic, d.dsccondition
+FROM Booking b
+JOIN Room r ON b.roomid = r.roomid
+JOIN Hotel h ON r.hotelid = h.hotelid
+JOIN Guest g ON b.guestid = g.guestid
+JOIN Discount d ON b.discountid = d.discountid
+WHERE d.dsccondition = 'Regular' 
+AND b.DateCheckIn >= '2025-01-01' 
+AND b.DateCheckOut <= '2025-12-31'
+GROUP BY h.title,g.firstname, g.surname, g.patronymic, d.dsccondition
+HAVING COUNT(b.bookingid) > 3;
+
+-- Створити представлення для відображення інформації про бронювання
+CREATE OR REPLACE VIEW BookingInfo AS
+SELECT 
+    h.title       AS hotel_title,
+    g.firstname   AS guest_firstname,
+    g.surname     AS guest_surname,
+    g.patronymic  AS guest_patronymic,
+    r.roomtype    AS room_type,
+    b.amount      AS booking_amount
+FROM Booking b
+JOIN Room r   ON b.roomid   = r.roomid
+JOIN Hotel h  ON r.hotelid  = h.hotelid
+JOIN Guest g  ON b.guestid  = g.guestid;
+
+SELECT * FROM BookingInfo;
+
+-- Створити представлення для відображення історії бронювань клієнтів
+CREATE OR REPLACE VIEW ClientBookingHistory AS
+SELECT
+    b.hotel_title,
+    b.guest_firstname,
+    b.guest_surname,
+    b.guest_patronymic,
+    bk.datecheckin  AS checkin_date,
+    bk.datecheckout AS checkout_date,
+    bk.status       AS booking_status,
+    b.booking_amount
+FROM BookingInfo b
+JOIN Booking bk ON b.booking_amount = bk.amount;
+
+SELECT * FROM ClientBookingHistory;
+
+-- Оновити представлення BookingInfo для включення додаткової інформації про бронювання
+CREATE OR REPLACE VIEW BookingInfo AS
+SELECT 
+	h.title       AS hotel_title,
+	g.firstname   AS guest_firstname,
+	g.surname     AS guest_surname,
+	g.patronymic  AS guest_patronymic,
+	r.roomtype    AS room_type,
+	b.amount      AS booking_amount,
+	b.datecheckin AS checkin_date,
+	b.datecheckout AS checkout_date,
+	b.status      AS booking_status
+FROM Booking b
+JOIN Room r   ON b.roomid   = r.roomid
+JOIN Hotel h  ON r.hotelid  = h.hotelid
+JOIN Guest g  ON b.guestid  = g.guestid;
+
+SELECT * FROM BookingInfo;
