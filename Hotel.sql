@@ -502,3 +502,302 @@ JOIN Hotel h  ON r.hotelid  = h.hotelid
 JOIN Guest g  ON b.guestid  = g.guestid;
 
 SELECT * FROM BookingInfo;
+
+-- -------------------------------------------------
+-- LabWork 5
+-- -------------------------------------------------
+
+
+CREATE OR REPLACE PROCEDURE CalculateTotalBookingAmountWithDiscount(
+    IN p_BookingID INT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_NumberOfNights INT;
+    v_PricePerNight  NUMERIC(10,2);
+    v_GuestID        INT;
+
+    totalAmount NUMERIC(10,2) := 0;
+    FinishedBookings INT;
+
+    AdditionalPrices       NUMERIC[] := '{}';
+    AdditionalServiceCount INT;
+    i INT := 1;
+BEGIN
+    -- Отримати кількість ночей, ціну номера і гостя
+    SELECT b.NumberOfNights,
+           r.PricePerNight,
+           b.GuestID
+    INTO   v_NumberOfNights,
+           v_PricePerNight,
+           v_GuestID
+    FROM Booking b
+    JOIN Room r ON r.RoomID = b.RoomID
+    WHERE b.BookingID = p_BookingID;
+
+    -- Розрахунок базової вартості проживання
+    totalAmount := totalAmount + (v_NumberOfNights * v_PricePerNight);
+
+    -- Отримати всі додаткові послуги як масив цін
+	SELECT ARRAY_AGG(hs.Price)
+	INTO AdditionalPrices
+	FROM BookingService bs
+	JOIN HotelService hs ON bs.HotelServiceID = hs.HotelServiceID
+	JOIN AdditionalService ad ON hs.ServiceID = ad.ServiceID
+	WHERE bs.BookingID = p_BookingID;
+
+    IF AdditionalPrices IS NULL THEN
+        AdditionalPrices := '{}';
+    END IF;
+
+    AdditionalServiceCount := array_length(AdditionalPrices, 1);
+
+    -- WHILE — додати кожну послугу до totalAmount
+    WHILE i <= COALESCE(AdditionalServiceCount, 0) LOOP
+        totalAmount := totalAmount + AdditionalPrices[i];
+        i := i + 1;
+    END LOOP;
+
+    -- Порахувати кількість завершених бронювань гостя
+    SELECT COUNT(*)
+    INTO   FinishedBookings
+    FROM Booking b
+    WHERE b.GuestID = v_GuestID
+      AND b.Status  = 'Confirmed';
+
+    -- Застосувати знижку за лояльністю
+    IF FinishedBookings > 4 THEN
+        totalAmount := totalAmount * 0.90;
+    ELSIF FinishedBookings BETWEEN 2 AND 4 THEN
+        totalAmount := totalAmount * 0.95;
+    END IF;
+
+    -- Оновити суму в Booking
+    UPDATE Booking
+    SET Amount = totalAmount
+    WHERE BookingID = p_BookingID;
+END;
+$$;
+
+CALL CalculateTotalBookingAmountWithDiscount(1);
+
+-- Створити процедуру для застосування сезонних знижок до бронювань у літній період
+CREATE OR REPLACE PROCEDURE ApplySeasonalDiscounts()
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    seasonal_discount NUMERIC(5,2) := 10.00; -- 10%
+BEGIN
+    UPDATE Booking
+    SET Amount = Amount * (1 - seasonal_discount / 100)
+    WHERE DateCheckIn BETWEEN DATE '2025-06-01' AND DATE '2025-08-31'
+      AND DateCheckOut BETWEEN DATE '2025-06-01' AND DATE '2025-08-31';
+END;
+$$;
+
+CALL ApplySeasonalDiscounts();
+
+-- Створити функцію для розрахунку загальної суми бронювання без знижок
+CREATE OR REPLACE FUNCTION CalculateBookingTotal(p_BookingID INT)
+RETURNS NUMERIC(10,2)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_NumberOfNights INT;
+    v_PricePerNight  NUMERIC(10,2);
+    totalAmount      NUMERIC(10,2) := 0;
+BEGIN
+    SELECT b.NumberOfNights,
+           r.PricePerNight
+    INTO   v_NumberOfNights,
+           v_PricePerNight
+    FROM Booking b
+    JOIN Room r ON r.RoomID = b.RoomID
+    WHERE b.BookingID = p_BookingID;
+
+    totalAmount := v_NumberOfNights * v_PricePerNight;
+
+    RETURN totalAmount;
+END;
+$$;
+SELECT CalculateBookingTotal(1) AS total_booking_amount;
+
+-- Створити процедуру для оновлення ціни номера
+CREATE OR REPLACE PROCEDURE UpdateRoomPrice(
+    IN p_RoomID INT,
+    IN p_NewPrice NUMERIC(10,2)
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_OldPrice NUMERIC(10,2);
+BEGIN
+    -- Отримати стару ціну та тип номера
+    SELECT r.PricePerNight
+    INTO   v_OldPrice
+    FROM   Room r
+    WHERE  r.RoomID = p_RoomID;
+
+    -- Оновити ціну
+    UPDATE Room
+    SET PricePerNight = p_NewPrice
+    WHERE RoomID = p_RoomID;
+
+    -- Логування
+    RAISE NOTICE 'Room ID %: Price updated from % to %', 
+                 p_RoomID, v_OldPrice, p_NewPrice;
+END;
+$$;
+CALL UpdateRoomPrice(5, 534.61)
+
+-- Створити функцію для отримання типу номера та ціни за ніч
+CREATE OR REPLACE FUNCTION GetRoomTypeAndPrice(p_RoomID INT)
+RETURNS TABLE(RoomType TEXT, PricePerNight NUMERIC(10,2))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT r.RoomType, r.PricePerNight
+    FROM Room r
+    WHERE r.RoomID = p_RoomID;
+END;
+$$;
+
+SELECT * FROM GetRoomTypeAndPrice(3);
+
+-- Створити функцію для отримання всіх бронювань певного гостя
+CREATE OR REPLACE FUNCTION GetAllGuestBookings(p_GuestID INT)
+RETURNS TABLE(BookingID INT, FirstName TEXT, Surname TEXT, DateCheckIn DATE, DateCheckOut DATE, Status TEXT, Amount NUMERIC(10,2))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	RETURN QUERY
+	SELECT b.BookingID, g.firstname, g.surname, b.DateCheckIn, b.DateCheckOut, b.Status, b.Amount
+	FROM Booking b
+	JOIN Guest g ON b.GuestID = g.GuestID
+	WHERE b.GuestID = p_GuestID;
+END;
+$$;
+
+SELECT * FROM GetAllGuestBookings(18);
+
+-- Процедура для обробки лояльності гостей
+CREATE OR REPLACE PROCEDURE ProcessGuestLoyalty()
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    rec RECORD;
+
+    guest_cursor CURSOR FOR
+        SELECT g.GuestID, g.FirstName, g.Surname
+        FROM Guest g;
+
+    bookings_count INT;
+BEGIN
+    -- Відкрити курсор
+    OPEN guest_cursor;
+	LOOP
+
+	FETCH guest_cursor INTO rec;
+	EXIT WHEN NOT FOUND;
+
+	SELECT COUNT(*) INTO bookings_count
+	FROM Booking b
+	WHERE b.GuestID = rec.GuestID;
+
+	-- Перевірка лояльності гостя
+	IF bookings_count > 2 THEN
+		RAISE NOTICE 'Guest % % is a loyal customer with % bookings.', rec.FirstName, rec.Surname, bookings_count;
+	ELSE
+		RAISE NOTICE 'Guest % % has % bookings and is not loyal.', rec.FirstName, rec.Surname, bookings_count;
+	END IF;
+
+	END LOOP;
+	CLOSE guest_cursor;
+END;
+$$;
+
+CALL ProcessGuestLoyalty();
+
+-- Тригер-функція для логування видалення гостя
+CREATE OR REPLACE FUNCTION LogGuestDeletion()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	RAISE NOTICE 'Guest with ID % and Name % % was deleted.', OLD.GuestID, OLD.FirstName, OLD.Surname;
+	RETURN OLD;
+END;
+$$;
+
+-- Тригер для логування видалення гостя
+CREATE TRIGGER GuestDeletionTrigger
+AFTER DELETE ON Guest
+FOR EACH ROW
+EXECUTE FUNCTION LogGuestDeletion();
+
+-- Тригер-функція для оновлення статусу бронювання
+CREATE OR REPLACE FUNCTION UpdateBookingStatus()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	IF NEW.Status = 'CheckedIn' THEN
+		RAISE NOTICE 'Booking ID % has been checked in on %', NEW.BookingID, CURRENT_TIMESTAMP;
+	ELSIF NEW.Status = 'CheckedOut' THEN
+		RAISE NOTICE 'Booking ID % has been checked out on %', NEW.BookingID, CURRENT_TIMESTAMP;
+	ELSIF NEW.Status = 'Cancelled' THEN
+		RAISE NOTICE 'Booking ID % has been cancelled on %', NEW.BookingID, CURRENT_TIMESTAMP;
+	ELSIF NEW.Status = 'Confirmed' THEN
+		RAISE NOTICE 'Booking ID % has been confirmed on %', NEW.BookingID, CURRENT_TIMESTAMP;
+	ELSIF NEW.Status = 'Pending' THEN
+		RAISE NOTICE 'Booking ID % is pending as of %', NEW.BookingID, CURRENT_TIMESTAMP;
+	END IF;
+	RETURN NEW;
+END;
+$$;
+
+-- Тригер для оновлення статусу бронювання
+CREATE TRIGGER BookingStatusUpdateTrigger
+AFTER UPDATE OF Status ON Booking
+FOR EACH ROW
+EXECUTE FUNCTION UpdateBookingStatus();
+
+-- Тригер-функція для обчислення суми бронювання при вставці нового запису
+CREATE OR REPLACE FUNCTION NewBookingInsered()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_nights INT;
+    v_price  NUMERIC(10,2);
+BEGIN
+	IF NEW.DateCheckOut <= NEW.DateCheckIn THEN
+        RAISE EXCEPTION 
+            'Invalid booking dates for BookingID %: check-in = %, check-out = %',
+            NEW.BookingID, NEW.DateCheckIn, NEW.DateCheckOut;
+	END IF;
+
+	v_nights := (NEW.DateCheckOut - NEW.DateCheckIn);
+
+    SELECT r.PricePerNight
+    INTO v_price
+    FROM Room r
+    WHERE r.RoomID = NEW.RoomID;
+
+    NEW.Amount := v_nights * v_price;
+
+    RAISE NOTICE 
+        'New booking inserted: BookingID %, GuestID %, RoomID %, Nights %, Amount %, Created at %',
+        NEW.BookingID, NEW.GuestID, NEW.RoomID, v_nights, NEW.Amount, CURRENT_TIMESTAMP;
+
+	RETURN NEW;
+END;
+$$;
+
+-- Тригер для обчислення суми бронювання при вставці нового запису
+CREATE TRIGGER NewBookingInsertedTrigger
+BEFORE INSERT ON Booking
+FOR EACH ROW
+EXECUTE FUNCTION NewBookingInsered();
